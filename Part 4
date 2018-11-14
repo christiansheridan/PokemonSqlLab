@@ -1,0 +1,16 @@
+
+#### PART 4 ####
+#Write a query that returns the following columns: Pokemon Name, Trainer Name, Level
+#                                                     Primary Type, Secondary Type
+#it ranks the trainers based on their pokemons level
+
+
+SELECT poke.name as "Pokemon Name", pt.trainername as "Trainer Name", ptrain.pokelevel as "Level",
+       ptypes.name as "Primary Type", ptypes2.name as "Secondary Type"
+FROM pokemon.pokemons poke
+JOIN pokemon.pokemon_trainer ptrain ON ptrain.pokemon_id = poke.id
+JOIN pokemon.types ptypes ON poke.primary_type = ptypes.id
+join pokemon.types ptypes2 ON poke.secondary_type = ptypes2.id
+join pokemon.trainers pt ON ptrain.trainerID = pt.trainerID
+ORDER BY ptrain.pokelevel;
+

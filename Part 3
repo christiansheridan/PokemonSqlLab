@@ -1,0 +1,45 @@
+### PART 3 ###
+#each pokemons primary type
+SELECT p.name, pt.name
+FROM pokemon.pokemons p
+JOIN pokemon.types pt
+ON pt.id = p.primary_type;
+
+#What is Rufflet's secondary type
+SELECT p.name, t.name
+FROM pokemon.pokemons p
+JOIN pokemon.types t
+ON p.secondary_type = t.id WHERE p.name = "rufflet";
+
+#what are the names of the pokemon that belong to the trainer with the trainerID 303?
+SELECT p.name
+FROM pokemon.pokemons p
+JOIN pokemon.pokemon_trainer ptrain
+ON ptrain.pokemon_id = p.id WHERE ptrain.trainerID = 303;
+
+#How many pokemon have a secondary type Poison
+SELECT count(p.secondary_type)
+FROM pokemon.pokemons p
+JOIN pokemon.types pt
+ON p.secondary_type = pt.id WHERE pt.name = "poison";
+
+#What are all the primary types and how many pokemon have that type?
+SELECT pt.name , count(pt.id) AS "Number of pokemon"
+FROM pokemon.pokemons p
+JOIN pokemon.types pt
+ON p.primary_type = pt.id
+GROUP BY pt.name;
+
+#how many pokemon at level 100 does each trainer with at least one level 100 pokemon have?
+#hint: your query should not display a trainer
+SELECT count(ptrain.pokelevel) AS "number of pokemon above 100 for each trainer with at least one pokemon above 100"
+FROM pokemon.pokemon_trainer ptrain
+WHERE ptrain.pokelevel = 100
+GROUP BY ptrain.trainerID;
+
+#how many pokemon only belong to one trainer and no other?
+SELECT COUNT(*) as "UniquelyOwned"
+FROM (SELECT DISTINCT pokemon_id, COUNT(pokemon_id)
+      FROM pokemon.pokemon_trainer
+      GROUP BY pokemon_id
+      HAVING COUNT(DISTINCT trainerID) = 1) alias;
